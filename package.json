@@ -1,6 +1,6 @@
 {
   "name": "desire",
-  "version": "0.0.0",
+  "version": "0.1.0",
   "description": "Dependency Injection Container in less than 50 lines",
   "main": "desire.js",
   "dependencies": {},
