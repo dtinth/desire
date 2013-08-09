@@ -17,7 +17,8 @@
   },
   "keywords": [
     "ioc",
-    "di"
+    "di",
+    "dependency injection"
   ],
   "author": "Thai Pangsakulynont <org.yi.dttvb@gmail.com>",
   "license": "Unlicense",
