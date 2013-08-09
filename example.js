@@ -4,10 +4,11 @@
 var App = function(desire) {
 
   var ui = desire('ui')
+  var version = desire('version')
 
   return {
     run: function() {
-      console.log('application starts')
+      console.log('application version ' + version)
       ui.show()
       console.log('ui is visible')
     }
@@ -25,12 +26,14 @@ var UI = function(desire) {
 
 }
 
+
 var Desire = require('./.')
 var desire = new Desire()
 
 desire.register({
   app: App,
-  ui: UI
+  ui: UI,
+  version: Desire.value('1.0.0')
 })
 
 var app = desire('app')
@@ -39,10 +42,17 @@ app.run()
 
 
 
+var FakeUI = function(desire) {
 
-var fakeUi = { show: function() { console.log('fake ui') } }
+  return {
+    show: function() {
+      console.log('this is a fake ui')
+    }
+  }
 
-var app2 = App(new Desire({ ui: Desire.value(fakeUi) }))
+}
+
+var app2 = App(new Desire({ ui: FakeUI, version: Desire.value('mock') }))
 
 app2.run()
 
