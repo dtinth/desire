@@ -1,14 +1,6 @@
-desire
-======
 
-Dependency Injection Container in less than 50 lines of code.
 
----
 
-To define a component that desires other components, create a
-component factory.
-
-```javascript
 var App = function(desire) {
 
   var ui = desire('ui')
@@ -22,12 +14,7 @@ var App = function(desire) {
   }
 
 }
-```
 
-
-Other components do the same:
-
-```javascript
 var UI = function(desire) {
 
   return {
@@ -37,13 +24,7 @@ var UI = function(desire) {
   }
 
 }
-```
 
----
-
-To run, create a container, register components, and desire.
-
-```javascript
 var Desire = require('./.')
 var desire = new Desire()
 
@@ -55,23 +36,19 @@ desire.register({
 var app = desire('app')
 
 app.run()
-```
-
----
-
-You can manually inject dependencies too.
-
-Because a component factory is just a function that desires other components,
-we can create a `Desire()` and pass it to the factory ourselves.
 
 
-```javascript
+
+
 var fakeUi = { show: function() { console.log('fake ui') } }
 
 var app2 = App(new Desire({ ui: Desire.value(fakeUi) }))
 
 app2.run()
-```
+
+
+
+
 
 
 
