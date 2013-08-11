@@ -1,4 +1,4 @@
-desire
+desire [![Build Status](https://travis-ci.org/dtinth/desire.png?branch=master)](https://travis-ci.org/dtinth/desire)
 ======
 
 Dependency Injection Container in less than 50 lines of code.
