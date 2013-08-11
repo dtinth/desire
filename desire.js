@@ -21,6 +21,12 @@ function Desire(initial) {
     }
   }
 
+  desire.clone = function() {
+    return new Desire(registry)
+  }
+
+  desire.registry = registry
+
   if (typeof initial === 'object' && initial) {
     desire.register(initial)
   }
