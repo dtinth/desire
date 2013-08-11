@@ -3,11 +3,17 @@ desire
 
 Dependency Injection Container in less than 50 lines of code.
 
-Just like we use `require()` to declare dependencies between modules,
-we can use `desire()` to declare dependencies between components/services.
+`desire()` is to components as `require()` is to modules.
+
+I'd think of __desire__ as a way of solving the dependency problem rather than calling it a library,
+and that this library is a reference implementation of a __desire__ container; it contained no magic,
+but small, straightforward code.
+
+__desire__ is unlicensed. It's public domain. You can use it for anything you want.
 
 
-Usage
+
+Creating Components, Specifying Dependencies
 ---
 
 To define a component that desires other components, create a
@@ -45,9 +51,12 @@ var UI = function(desire) {
 }
 ```
 
+
+Put the Components Together
 ---
 
-To run, create a container, register components, and desire.
+To put them all together, create a container, register the component factories,
+and then call __desire("component name")__.
 
 ```javascript
 var Desire = require('./.')
@@ -63,6 +72,8 @@ var app = desire('app')
 
 app.run()
 ```
+
+
 
 Manually Injecting Dependencies
 ---
@@ -97,6 +108,7 @@ Above was all that __desire__ does. The rest is up to you.
 In this section I will show you some usage patterns.
 
 
+
 ### Module as Component Factory
 
 I usually write a module to represent a component.
@@ -117,7 +129,7 @@ module.exports = function RoomService(desire) {
 
 Usage:
 
-```
+```javascript
 desire.register({ rooms: require('./components/room_service') })
 ```
 
@@ -127,7 +139,7 @@ desire.register({ rooms: require('./components/room_service') })
 `desire` manages just the dependencies for you.
 You have to manage configrations yourself...
 
-One way to do it is make a factory factory.
+One way to do it is make a "component factory factory".
 
 ```javascript
 module.exports = function(config) {
@@ -143,7 +155,7 @@ desire.register({ rooms: require('./components/room_service')({ ... }) })
 ```
 
 
-Another way is to use `Function.prototype.bind`.
+Another way is to use `Function.prototype.bind` to bing the configuration to `this`.
 
 ```
 module.exports = function RoomService(desire) {
