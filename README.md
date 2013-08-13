@@ -93,7 +93,12 @@ and the returned component will be put into the container's __cache__.
 An error is thrown when the component factory with the requested
 name is not in the __registry__.
 
+This `desire` function is the same function that is passed to the
+component factory, so each component can desire other components.
+
 Again, see the above examples, or read the source code.
+
+
 
 
 Manually Injecting Dependencies
