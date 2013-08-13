@@ -1,45 +1,67 @@
 
-function Desire(initial) {
 
-  var cache = {}
-  var registry = {}
+var Desire = (function() {
 
-  function desire(name) {
-    if (!cache[name]) {
-      if (!registry[name]) throw new Error("Not registered: " + name)
-      cache[name] = {}
-      cache[name].value = registry[name](desire)
+  var has = Object.prototype.hasOwnProperty
+
+  function Desire(parent, initial) {
+
+    if (typeof parent !== 'function' && !initial) {
+      initial = parent
+      parent = noParent
     }
-    return cache[name].value
-  }
 
-  desire.register = function(object) {
-    for (var i in object) {
-      if (Object.prototype.hasOwnProperty.call(object, i)) {
-        registry[i] = object[i]
+    var cache = {}
+    var registry = {}
+
+    function desire(name) {
+      if (!cache[name]) {
+        if (!registry[name]) return parent(name)
+        cache[name] = {}
+        cache[name].value = registry[name](desire)
       }
+      return cache[name].value
     }
+
+    desire.register = function(object) {
+      copy(registry, object)
+      return this
+    }
+
+    desire.clone = function() {
+      return new Desire(parent, registry)
+    }
+
+    desire.registry = registry
+
+    if (typeof initial === 'object' && initial) {
+      desire.register(initial)
+    }
+
+    initial = null
+
+    return desire
+
   }
 
-  desire.clone = function() {
-    return new Desire(registry)
+  Desire.value = function(value) {
+    return function(desire) { return value }
   }
 
-  desire.registry = registry
-
-  if (typeof initial === 'object' && initial) {
-    desire.register(initial)
+  function copy(dest, source) {
+    for (var i in source) {
+      if (has.call(source, i)) dest[i] = source[i]
+    }
+    return dest
   }
 
-  initial = null
+  function noParent(name) {
+    throw new Error("Component not registered: " + name)
+  }
 
-  return desire
+  return Desire
 
-}
-
-Desire.value = function(value) {
-  return function(desire) { return value }
-}
+})()
 
 /*global define*/
 if (typeof define === 'function' && define.amd) {

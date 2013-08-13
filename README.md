@@ -73,6 +73,27 @@ var app = desire('app')
 app.run()
 ```
 
+`desire.register(object)`
+---
+`desire.register(object)` takes an object and adds each property to
+the container's __registry__.
+
+The property's name is the component's name and the property's value is the
+component factory function (see above examples).
+
+
+`desire(componentName)`
+---
+`desire(componentName)` will look up a component given by `componentName`
+in the container's __cache__.
+If the component is not in the cache,
+the component factory will be invoked,
+and the returned component will be put into the container's __cache__.
+
+An error is thrown when the component factory with the requested
+name is not in the __registry__.
+
+Again, see the above examples, or read the source code.
 
 
 Manually Injecting Dependencies
@@ -98,6 +119,33 @@ var app2 = App(new Desire({ ui: FakeUI, version: Desire.value('mock') }))
 
 app2.run()
 ```
+
+
+`desire.clone()`
+---
+
+You can call `desire.clone()` to create a copy of the container.
+
+Only the __registry__ will be copied. The __cache__ will not be copied.
+
+
+Child Containers
+---
+
+Sometimes you want to have a component that have sub-components, but you want
+them to be isolated from the rest of the world.
+
+That's when you can create a child container.
+
+```javascript
+var child = new Desire(parent)
+```
+
+It behaves like normal containers,
+but when you look up a component that's not in the child's registry,
+it will look up in the parent's registry too.
+
+
 
 
 Some Patterns

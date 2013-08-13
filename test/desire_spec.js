@@ -73,6 +73,42 @@ describe('Desire', function() {
       expect(desire2('a')).not.to.equal(a)
       expect(desire2('b')).not.to.equal(desire('b'))
     })
+
+    context('and another container with parent', function() {
+      
+      var childComponents = {
+        d: function(desire) {
+          return { c: desire('c') }
+        }
+      }
+
+      it('should be able to find components in parent', function() {
+        var child = new Desire(desire)
+        expect(child('a')).to.equal(desire('a'))
+      })
+
+      it('should be able to find components in child', function() {
+        var child = new Desire(desire)
+        child.register(childComponents)
+        expect(child('d').c).to.equal(desire('c'))
+      })
+
+      it('should be able to find components in child, also when created with constructor', function() {
+        var child = new Desire(desire, childComponents)
+        expect(child('d').c).to.equal(desire('c'))
+      })
+
+      it('but the parent should not see the child', function() {
+        var child = new Desire(desire, childComponents)
+        desire.register({
+          test: function(desire) {
+            desire('d')
+          }
+        })
+        expect(function() { desire('test') }).to.throw(Error)
+      })
+      
+    })
     
   })
 
